@@ -1,0 +1,14 @@
+{
+    "ListenURL": ":8888",
+    "URLPrefix": "/demo",
+    "APIVersion": "/v1",
+    "Log": {
+        "Level": "DEBUG"
+    },
+    "Version": {
+        "ServiceName": "Demo-Service",
+        "Major": "1",
+        "Minor": "0",
+        "Patch": "0"
+    }
+}
