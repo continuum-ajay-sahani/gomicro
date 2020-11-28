@@ -4,3 +4,10 @@ http://localhost:8888/demo/version
 http://localhost:8888/demo/health
 
 https://github.com/rohitsingh20122992/cab/blob/master/src/main/java/booking/models/Booking.java
+
+1: register rider
+2: register driver
+3: register vehicle
+4: update vehicle location (lat and long)
+5: rating
+6: payment
