@@ -2,3 +2,5 @@ https://editor.swagger.io/
 
 http://localhost:8888/demo/version
 http://localhost:8888/demo/health
+
+https://github.com/rohitsingh20122992/cab/blob/master/src/main/java/booking/models/Booking.java
