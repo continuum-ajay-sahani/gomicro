@@ -1,12 +1,12 @@
 package service
 
 import (
-	"fmt"
 	"net/http"
-	"time"
+	"practice/gomicro/src/lib"
+	"practice/gomicro/src/model"
 )
 
-// handlerAppVersion used for application version handler
+// handlerAppHealth used for application health handler
 var handlerAppHealth = func(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "health api: %v\n", time.Now())
+	lib.RenderJSON(w, r, model.AppHealth())
 }

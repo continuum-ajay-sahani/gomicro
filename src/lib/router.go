@@ -111,3 +111,23 @@ func render(w http.ResponseWriter, code int, response []byte) {
 		logger.Error(errMsg)
 	}
 }
+
+// RenderJSON is used for rendering JSON response body with appropriate headers
+func RenderJSON(w http.ResponseWriter, r *http.Request, response interface{}) {
+	renderJSON(w, r, http.StatusOK, response)
+}
+
+// RenderJSONCreated is used for rendering JSON response body when new resource has been created
+func RenderJSONCreated(w http.ResponseWriter, r *http.Request, response interface{}) {
+	renderJSON(w, r, http.StatusCreated, response)
+}
+
+// renderJSON is used for rendering JSON response
+func renderJSON(w http.ResponseWriter, r *http.Request, status int, response interface{}) {
+	data, err := json.Marshal(response)
+	if err != nil {
+		SendInternalServerError(w, r, fmt.Errorf("common.renderJSON: err:%s", err))
+		return
+	}
+	render(w, status, data)
+}
