@@ -1,0 +1,2 @@
+http://localhost:8888/demo/version
+http://localhost:8888/demo/health
