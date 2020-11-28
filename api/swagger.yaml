@@ -1,0 +1,62 @@
+# this is an example of the Entitlement Service ContinuumLLC API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: Demo Service API
+  version: 1.0.0
+schemes:
+  - http
+host: localhost:8888
+basePath: /demo
+produces:
+  - application/json
+consumes:
+  - application/json
+paths:
+  /version:
+    get:
+      summary: Application version
+      tags:
+        - version
+      responses:
+        '200':
+          description: Version info
+          schema:
+            $ref: '#/definitions/Version'
+  /health:
+    get:
+      summary: Application Health details
+      tags:
+        - health
+      responses:
+        '200':
+          description: Health information
+          schema:
+            $ref: '#/definitions/Health'
+
+definitions:
+  Version:
+    type: object
+    properties:
+      ServiceName:
+        type: string
+        description: Name of Service
+      Major:
+        type: string
+        description: Version of Service
+      Minor:
+        type: string
+        description: Name of version
+      Patch:
+        type: string
+        description: Type for version
+  Health:
+    type: object
+    properties:
+      MemoryCache:
+        type: boolean
+        description: Cache available
+     
+     
+
+        
