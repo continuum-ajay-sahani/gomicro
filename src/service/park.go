@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"net/http"
 	"practice/gomicro/src/app"
 	"practice/gomicro/src/entity"
@@ -16,9 +15,8 @@ var parking = func(w http.ResponseWriter, r *http.Request) {
 	lib.ParseRequestBody(r, &pkLot)
 	err := model.Parking(pkLot)
 	if err != nil {
-		fmt.Println(err)
-		//lib.SendError(w, r, 51, "car parking error", err)
-		//return
+		lib.SendError(w, r, http.StatusBadRequest, "car parking error", err)
+		return
 	}
 	lib.RenderJSONCreated(w, r, &pkLot)
 }
@@ -28,6 +26,10 @@ var parkout = func(w http.ResponseWriter, r *http.Request) {
 	app.Service.LoggerService.Info("parkout vehicle")
 	pkLot := entity.ParkingLot{}
 	lib.ParseRequestBody(r, &pkLot)
-	model.Parkout(pkLot)
+	err := model.Parkout(pkLot)
+	if err != nil {
+		lib.SendError(w, r, http.StatusBadRequest, "car parkout error", err)
+		return
+	}
 	lib.RenderJSONCreated(w, r, &pkLot)
 }

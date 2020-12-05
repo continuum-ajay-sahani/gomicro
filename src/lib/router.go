@@ -92,7 +92,7 @@ func SendError(w http.ResponseWriter, r *http.Request, code int, message string,
 		ctx := r.Context()
 		txnValue := GetTransactionContextValue(ctx)
 		errMsg := fmt.Sprintf("%v %v %v %v", txnValue, errForLog.Error(), r.Method, r.URL)
-		logger.Error(errMsg)
+		logger.Info(errMsg)
 	}
 	render(w, code, data)
 }
