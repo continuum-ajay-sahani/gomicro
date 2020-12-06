@@ -12,4 +12,6 @@ var handlerAppHealth = func(w http.ResponseWriter, r *http.Request) {
 	app.Service.LoggerService.Info("health api")
 	//routeVars := mux.Vars(r)
 	lib.RenderJSON(w, r, model.AppHealth())
+	//graceful shutdown example
+	//app.OSSingnal <- syscall.SIGTERM
 }

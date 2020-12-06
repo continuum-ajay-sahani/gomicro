@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
 	"practice/gomicro/src/app"
@@ -11,10 +12,12 @@ import (
 	"practice/gomicro/src/config"
 	"practice/gomicro/src/lib"
 	"practice/gomicro/src/service"
+	"syscall"
 	"time"
 )
 
 var wait time.Duration
+var srv *http.Server
 
 func readAppArgs() {
 	configFile := flag.String("config", "../config.json",
@@ -38,20 +41,20 @@ func loadAppData() {
 }
 
 func setupReqRouter() {
-	srv := lib.GetHTTPServer(service.NewRouter(), app.Service.ConfigService.ListenURL)
+	srv = lib.GetHTTPServer(service.NewRouter(), app.Service.ConfigService.ListenURL)
 	// Run our server in a goroutine so that it doesn't block.
 	go func() {
 		if err := srv.ListenAndServe(); err != nil {
 			app.Service.LoggerService.Error(err.Error())
 		}
 	}()
-	c := make(chan os.Signal, 1)
-	// We'll accept graceful shutdowns when quit via SIGINT (Ctrl+C)
-	// SIGKILL, SIGQUIT or SIGTERM (Ctrl+/) will not be caught.
-	signal.Notify(c, os.Interrupt)
+}
+
+func handleShutDown() {
+	signal.Notify(app.OSSingnal, os.Interrupt, syscall.SIGTERM)
 
 	// Block until we receive our signal.
-	<-c
+	<-app.OSSingnal
 
 	// Create a deadline to wait for.
 	ctx, cancel := context.WithTimeout(context.Background(), wait)
@@ -71,4 +74,5 @@ func main() {
 	readAppArgs()
 	loadAppData()
 	setupReqRouter()
+	handleShutDown()
 }
