@@ -14,7 +14,6 @@ func NewRouter() *mux.Router {
 	libRouter := lib.GetReqRouter()
 	router := libRouter.StrictSlash(true)
 
-	//api := router
 	api := router.PathPrefix(config.URLPrefix).Subrouter()
 	apiV1 := api.PathPrefix(config.APIVersion).Subrouter()
 

@@ -1,6 +1,7 @@
 package loader
 
 import (
+	"os"
 	"practice/gomicro/src/app"
 	"practice/gomicro/src/config"
 	"practice/gomicro/src/logger"
@@ -10,6 +11,7 @@ import (
 // LoadApplicationServices loads all partial configurations of components
 // and populates the app.App with the configuration data
 func LoadApplicationServices() error {
+	initOSSignalChannel()
 	app.Service = &app.App{}
 
 	err := config.Load()
@@ -26,4 +28,8 @@ func LoadApplicationServices() error {
 	persistent.Load()
 
 	return nil
+}
+
+var initOSSignalChannel = func() {
+	app.OSSingnal = make(chan os.Signal, 1)
 }

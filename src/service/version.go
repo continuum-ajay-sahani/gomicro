@@ -10,5 +10,8 @@ import (
 // handlerAppVersion used for application version handler
 var handlerAppVersion = func(w http.ResponseWriter, r *http.Request) {
 	app.Service.LoggerService.Info("version api")
+	//routeVars := mux.Vars(r)
+	//pkLot := entity.ParkingLot{}
+	//lib.ParseRequestBody(r, &pkLot)
 	lib.RenderJSON(w, r, model.AppVersion())
 }

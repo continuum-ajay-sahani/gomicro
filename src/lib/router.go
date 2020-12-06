@@ -3,7 +3,10 @@ package lib
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
+	"time"
 
 	"github.com/gocql/gocql"
 	"github.com/gorilla/mux"
@@ -57,6 +60,20 @@ var GetMiddlewareManager = func() *negroni.Negroni {
 	middlewareManager := negroni.New()
 	middlewareManager.Use(negroni.NewRecovery())
 	return middlewareManager
+}
+
+// GetHTTPServer return http server object
+var GetHTTPServer = func(router *mux.Router, addr string) *http.Server {
+	middlewareManager := GetMiddlewareManager()
+	middlewareManager.UseHandler(router)
+	// Good practice to set timeouts to avoid Slowloris attacks.
+	return &http.Server{
+		Addr:         addr,
+		WriteTimeout: time.Second * 15,
+		ReadTimeout:  time.Second * 15,
+		IdleTimeout:  time.Second * 60,
+		Handler:      middlewareManager,
+	}
 }
 
 // WrapMethodHandler wrapper for MethodHandler map
@@ -130,4 +147,20 @@ func renderJSON(w http.ResponseWriter, r *http.Request, status int, response int
 		return
 	}
 	render(w, status, data)
+}
+
+// ParseRequestBody parse request query parameter from request body(POST, PUT, DELETE)
+func ParseRequestBody(r *http.Request, m interface{}) {
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+	log.Println(string(body))
+	bv := make(map[string]string)
+	err = json.Unmarshal(body, &bv)
+	if err != nil {
+		panic(err)
+	}
+	q, _ := bv["query"]
+	json.Unmarshal([]byte(q), &m)
 }
