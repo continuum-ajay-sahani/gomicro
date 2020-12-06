@@ -149,8 +149,13 @@ func renderJSON(w http.ResponseWriter, r *http.Request, status int, response int
 	render(w, status, data)
 }
 
-// ParseRequestBody parse request query parameter from request body(POST, PUT, DELETE)
-func ParseRequestBody(r *http.Request, m interface{}) {
+// ParseHTTPRequestBody parse body parameter from http request
+func ParseHTTPRequestBody(r *http.Request, m interface{}) error {
+	return json.NewDecoder(r.Body).Decode(m)
+}
+
+// ParseGraphQLRequestBody parse request query parameter from GraphQL request body
+func ParseGraphQLRequestBody(r *http.Request, m interface{}) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		panic(err)

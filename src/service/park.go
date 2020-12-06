@@ -11,8 +11,8 @@ import (
 // parking used for application to  parking vehicle
 var parking = func(w http.ResponseWriter, r *http.Request) {
 	app.Service.LoggerService.Info("parking vehicle")
-	pkLot := entity.ParkingLot{}
-	lib.ParseRequestBody(r, &pkLot)
+	var pkLot entity.ParkingLot
+	lib.ParseHTTPRequestBody(r, &pkLot)
 	err := model.Parking(pkLot)
 	if err != nil {
 		lib.SendError(w, r, http.StatusBadRequest, "car parking error", err)
@@ -24,8 +24,8 @@ var parking = func(w http.ResponseWriter, r *http.Request) {
 // parking used for application to  parkout vehicle
 var parkout = func(w http.ResponseWriter, r *http.Request) {
 	app.Service.LoggerService.Info("parkout vehicle")
-	pkLot := entity.ParkingLot{}
-	lib.ParseRequestBody(r, &pkLot)
+	var pkLot entity.ParkingLot
+	lib.ParseHTTPRequestBody(r, &pkLot)
 	err := model.Parkout(pkLot)
 	if err != nil {
 		lib.SendError(w, r, http.StatusBadRequest, "car parkout error", err)
