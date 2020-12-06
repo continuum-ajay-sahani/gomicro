@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gocql/gocql"
 	"github.com/gorilla/mux"
@@ -57,6 +58,20 @@ var GetMiddlewareManager = func() *negroni.Negroni {
 	middlewareManager := negroni.New()
 	middlewareManager.Use(negroni.NewRecovery())
 	return middlewareManager
+}
+
+// GetHTTPServer return http server object
+var GetHTTPServer = func(router *mux.Router, addr string) *http.Server {
+	middlewareManager := GetMiddlewareManager()
+	middlewareManager.UseHandler(router)
+	// Good practice to set timeouts to avoid Slowloris attacks.
+	return &http.Server{
+		Addr:         addr,
+		WriteTimeout: time.Second * 15,
+		ReadTimeout:  time.Second * 15,
+		IdleTimeout:  time.Second * 60,
+		Handler:      middlewareManager,
+	}
 }
 
 // WrapMethodHandler wrapper for MethodHandler map
