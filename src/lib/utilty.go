@@ -8,6 +8,8 @@ import (
 	"io/ioutil"
 	"log"
 	"path/filepath"
+
+	"github.com/gocql/gocql"
 )
 
 // TransactionContext use data context
@@ -54,4 +56,9 @@ func GetTransactionContextValue(ctx context.Context) string {
 	}
 
 	return v.(string)
+}
+
+// GetUniqueID return unique id
+func GetUniqueID() string {
+	return gocql.TimeUUID().String()
 }
