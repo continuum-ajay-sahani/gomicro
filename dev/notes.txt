@@ -4,3 +4,13 @@ http://localhost:8888/demo/version
 http://localhost:8888/demo/health
 
 https://github.com/continuum-ajay-sahani/gomicro
+
+1: To read parameter from URL
+routeVars := mux.Vars(r)
+
+2: To fetch from request body
+var h entity.AppHealth
+err := json.NewDecoder(r.Body).Decode(&h)
+
+3: graceful shutdown example
+app.OSSingnal <- syscall.SIGTERM

@@ -7,7 +7,6 @@ import (
 	"errors"
 	"io/ioutil"
 	"log"
-	"net/http"
 	"path/filepath"
 )
 
@@ -55,20 +54,4 @@ func GetTransactionContextValue(ctx context.Context) string {
 	}
 
 	return v.(string)
-}
-
-// ParseRequestBody parse request query parameter from request body(POST, PUT, DELETE)
-func ParseRequestBody(r *http.Request, m interface{}) {
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		panic(err)
-	}
-	log.Println(string(body))
-	bv := make(map[string]string)
-	err = json.Unmarshal(body, &bv)
-	if err != nil {
-		panic(err)
-	}
-	q, _ := bv["query"]
-	json.Unmarshal([]byte(q), &m)
 }
