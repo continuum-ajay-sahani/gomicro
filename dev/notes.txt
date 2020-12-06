@@ -10,7 +10,7 @@ routeVars := mux.Vars(r)
 
 2: To fetch from request body
 var h entity.AppHealth
-err := json.NewDecoder(r.Body).Decode(&h)
+err := json.NewDecoder(r.Body).Decode(&h) or lib.ParseHTTPRequestBody(r,&h)
 
 3: graceful shutdown example
 app.OSSingnal <- syscall.SIGTERM
